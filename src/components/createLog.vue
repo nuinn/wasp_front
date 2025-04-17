@@ -1,30 +1,58 @@
 <script setup>
-import { ref, shallowRef } from "vue";
+import { ref, shallowRef } from "vue"
+import textsData from "../data/texts.js"
+import Navigate from './Navigate/Navigate.vue'
 
-const currentStep = ref(0)
+const currentStep = ref(0);
 
-const steps = shallowRef([])
+const steps = shallowRef([]);
+const texts = shallowRef([...textsData]);
 
 function next() {
-  if (currentStep.value < steps.value.length) currentStep.value++
+  if (currentStep.value < texts.value.length) currentStep.value++;
 }
 
 function back() {
-  if (currentStep.value) currentStep.value--
+  if (currentStep.value) currentStep.value--;
 }
-
 </script>
 
 <template>
-  <component :is="steps[currentStep]"></component>
+  <div id="log-wrap">
+    <div class="input-wrap">
+      <h1>{{ texts[currentStep].title }}</h1>
+      <p>{{ texts[currentStep].detail }}</p>
+    </div>
 
-  <div class="nav-buttons">
-
+    <!-- <component :is="steps[currentStep]"></component> -->
+    <Navigate @back="back" @next="next"></Navigate>
   </div>
-
 </template>
 
 <style scoped>
+#log-wrap {
+  height: 100%;
+  width: 100%;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 
+  & .input-wrap {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
 
+    & h1 {
+      font-family: 'Ovo', serif;
+    }
+
+    & p {
+      font-size: 1.6rem;
+    }
+  }
+}
 </style>

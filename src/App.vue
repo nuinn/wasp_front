@@ -1,9 +1,9 @@
 <script setup>
-import HelloWorld from './components/HelloWorld.vue'
+import CreateLog from './components/CreateLog.vue'
 </script>
 
 <template>
-
+  <CreateLog></CreateLog>
 </template>
 
 <style scoped>
