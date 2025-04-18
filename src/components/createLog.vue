@@ -1,15 +1,18 @@
 <script setup>
 import { ref, shallowRef } from "vue"
 import textsData from "../data/texts.js"
+import Intensity from "./Step/Intensity.vue"
 import Navigate from './Navigate/Navigate.vue'
 
 const currentStep = ref(0);
 
-const steps = shallowRef([]);
+const steps = shallowRef([
+  Intensity
+]);
 const texts = shallowRef([...textsData]);
 
 function next() {
-  if (currentStep.value < texts.value.length) currentStep.value++;
+  if (currentStep.value < steps.value.length) currentStep.value++;
 }
 
 function back() {
@@ -19,12 +22,12 @@ function back() {
 
 <template>
   <div id="log-wrap">
-    <div class="input-wrap">
+    <div class="instructions-container">
       <h1>{{ texts[currentStep].title }}</h1>
       <p>{{ texts[currentStep].detail }}</p>
     </div>
 
-    <!-- <component :is="steps[currentStep]"></component> -->
+    <component :is="steps[currentStep]"></component>
     <Navigate @back="back" @next="next"></Navigate>
   </div>
 </template>
@@ -38,8 +41,8 @@ function back() {
   flex-direction: column;
   justify-content: space-between;
 
-  & .input-wrap {
-    height: 100%;
+  & .instructions-container {
+    /* height: 100%; */
     width: 100%;
     display: flex;
     flex-direction: column;
