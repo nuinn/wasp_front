@@ -76,6 +76,7 @@ function handleClick(index) {
   flex-direction: column;
   align-items: center;
   position: relative;
+  top: 5rem;
 }
 
 .overlay-container {

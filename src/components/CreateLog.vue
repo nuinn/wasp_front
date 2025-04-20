@@ -2,12 +2,17 @@
 import { ref, shallowRef, reactive } from "vue";
 import textsData from "../data/texts.js";
 import Intensity from "./Step/Intensity.vue";
+import Location from "./Step/Location.vue";
+
 import Navigate from "./Navigate/Navigate.vue";
 
-const currentStep = ref(0);
+const currentStep = ref(1);
 const canProgress = ref(false);
 
-const steps = shallowRef([Intensity]);
+const steps = shallowRef([
+  Intensity,
+  Location
+]);
 const texts = shallowRef([...textsData]);
 
 const crvLog = reactive({});
@@ -73,6 +78,10 @@ function back() {
     & p {
       font-size: 1.6rem;
     }
+  }
+
+  & .navigate-housing {
+    height: 10rem;
   }
 }
 </style>
