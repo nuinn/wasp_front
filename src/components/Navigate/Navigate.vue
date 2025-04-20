@@ -1,12 +1,22 @@
 <script setup>
 import Lateral from "../Button/Lateral.vue";
 const emit = defineEmits(["back", "next"]);
+defineProps({
+  canProgress: Boolean,
+  canReturn: Boolean,
+});
 </script>
 
 <template>
   <div class="nav-buttons">
-    <Lateral type="back" @click="emit('back')"></Lateral>
-    <Lateral type="next" @click="emit('next')"></Lateral>
+    <Lateral
+      :type="`back ${canReturn ? '' : 'disabled'}`"
+      @click="emit('back')"
+    ></Lateral>
+    <Lateral
+      :type="`next ${canProgress ? '' : 'disabled'}`"
+      @click="emit('next')"
+    ></Lateral>
   </div>
 </template>
 
@@ -18,5 +28,10 @@ const emit = defineEmits(["back", "next"]);
   align-items: center;
   padding: 2rem;
   gap: 2rem;
+  position: absolute;
+  z-index: 10;
+  bottom: 2rem;
+  left: 0px;
+  right: 0px;
 }
 </style>

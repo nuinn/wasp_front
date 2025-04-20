@@ -1,15 +1,22 @@
 <script setup>
-import { ref, shallowRef } from "vue"
-import textsData from "../data/texts.js"
-import Intensity from "./Step/Intensity.vue"
-import Navigate from './Navigate/Navigate.vue'
+import { ref, shallowRef, reactive } from "vue";
+import textsData from "../data/texts.js";
+import Intensity from "./Step/Intensity.vue";
+import Navigate from "./Navigate/Navigate.vue";
 
 const currentStep = ref(0);
+const canProgress = ref(false);
 
-const steps = shallowRef([
-  Intensity
-]);
+const steps = shallowRef([Intensity]);
 const texts = shallowRef([...textsData]);
+
+const crvLog = reactive({});
+
+function handleEmission(e) {
+  canProgress.value = true;
+  crvLog.value = { ...crvLog.value, ...e };
+  console.log("crvLog.value", crvLog.value);
+}
 
 function next() {
   if (currentStep.value < steps.value.length) currentStep.value++;
@@ -27,8 +34,18 @@ function back() {
       <p>{{ texts[currentStep].detail }}</p>
     </div>
 
-    <component :is="steps[currentStep]"></component>
-    <Navigate @back="back" @next="next"></Navigate>
+    <component
+      :is="steps[currentStep]"
+      @emission="(e) => handleEmission(e)"
+    ></component>
+    <div class="navigate-housing">
+      <Navigate
+        :canProgress="canProgress"
+        :canReturn="!!currentStep"
+        @back="back"
+        @next="next"
+      ></Navigate>
+    </div>
   </div>
 </template>
 
@@ -50,7 +67,7 @@ function back() {
     align-items: flex-start;
 
     & h1 {
-      font-family: 'Ovo', serif;
+      font-family: "Ovo", serif;
     }
 
     & p {

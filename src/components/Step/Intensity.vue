@@ -1,6 +1,6 @@
 <script setup>
 import { ref } from "vue";
-const emit = defineEmits(["selected-intensity"]);
+const emit = defineEmits(["emission"]);
 
 const levels = [
   "Barely noticeable",
@@ -19,7 +19,7 @@ function getClasses(index) {
 
 function handleClick(index) {
   currentIndex.value = index;
-  emit("selected-intensity", index + 1);
+  emit("emission", { intensity: index + 1 });
 }
 </script>
 

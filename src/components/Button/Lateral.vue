@@ -8,7 +8,7 @@ const emit = defineEmits(["click"]);
 <template>
   <div class="lateral" :class="type" @click="emit('click')">
     <svg
-      v-show="type === 'back'"
+      v-if="type.includes('back')"
       xmlns="http://www.w3.org/2000/svg"
       height="24px"
       viewBox="0 -960 960 960"
@@ -17,9 +17,9 @@ const emit = defineEmits(["click"]);
     >
       <path d="M400-80 0-480l400-400 71 71-329 329 329 329-71 71Z" />
     </svg>
-    <span>{{ type === "back" ? "Back" : "Next" }}</span>
+    <span>{{ type.includes("back") ? "Back" : "Next" }}</span>
     <svg
-      v-show="type === 'next'"
+      v-if="type.includes('next')"
       xmlns="http://www.w3.org/2000/svg"
       height="24px"
       viewBox="0 -960 960 960"
@@ -34,23 +34,37 @@ const emit = defineEmits(["click"]);
 <style scoped>
 .lateral {
   display: flex;
-  justify-content: flex-end;
+  justify-content: center;
   align-items: center;
   height: 4rem;
-  width: 20rem;
+  width: 45%;
   border-radius: 3rem;
   gap: 2rem;
   background-color: var(--teal);
   padding: 0 2rem;
+  position: relative;
+  cursor: pointer;
+  transition: opacity .3s;
 
   & span {
     color: var(--light-vanilla);
     font-weight: 600;
   }
+  & svg {
+    position: absolute;
+    right: 1.2rem;
+  }
 }
 
 .back {
   background-color: var(--moonstone);
-  justify-content: flex-start;
+  & svg {
+    left: 2rem;
+  }
+}
+
+.disabled {
+  opacity: 20%;
+  cursor: not-allowed;
 }
 </style>
