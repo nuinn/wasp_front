@@ -1,5 +1,5 @@
 <script setup>
-import { ref } from "vue";
+import { ref, onMounted } from "vue";
 const emit = defineEmits(["emission"]);
 
 const levels = [
@@ -9,23 +9,34 @@ const levels = [
   "Really pulling me",
   "All I can think about",
 ];
-const currentIndex = ref(-1);
+// const currentIndex = ref(-1);
+
+const props = defineProps({
+  crvLog: Object
+})
+
+onMounted(() => {
+  console.log('crvLog', props.crvLog)
+})
 
 function getClasses(index) {
   const classes = [`intensity-${index + 1}`];
-  if (currentIndex.value === index) classes.push("selected");
+  if (index === props.crvLog.intensity - 1) classes.push("selected");
   return classes.join(" ");
 }
 
 function handleClick(index) {
-  currentIndex.value = index;
+  // currentIndex.value = index;
   emit("emission", { intensity: index + 1 });
 }
+
 </script>
 
 <template>
   <div id="intensity-component">
     <div class="scale-container">
+      <pre>{{ crvLog }}</pre>
+
       <div
         v-for="(_, index) in levels"
         class="level"
@@ -34,7 +45,7 @@ function handleClick(index) {
       ></div>
       <div class="level blocker"></div>
       <div class="inner-circle">
-        {{ currentIndex >= 0 ? currentIndex + 1 : "" }}
+        {{ crvLog.intensity }}
       </div>
       <div class="borderer"></div>
     </div>
@@ -223,6 +234,7 @@ function handleClick(index) {
     padding-top: 10%;
     font-size: 3rem;
     color: var(--prussian);
+    font-family: "Ovo", serif;
   }
   & .borderer {
     width: 100%;

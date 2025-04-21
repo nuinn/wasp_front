@@ -15,7 +15,9 @@ const steps = shallowRef([
 ]);
 const texts = shallowRef([...textsData]);
 
-const crvLog = reactive({});
+const crvLog = reactive({
+  intensity: 0
+});
 
 function handleEmission(e) {
   canProgress.value = true;
@@ -40,6 +42,7 @@ function back() {
     </div>
 
     <component
+      :crvLog="crvLog"
       :is="steps[currentStep]"
       @emission="(e) => handleEmission(e)"
     ></component>
