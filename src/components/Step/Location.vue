@@ -1,14 +1,30 @@
 <script setup>
-import { ref, shallowRef } from "vue";
+import { ref, toRef } from "vue";
+import Autocomplete from '../Autocomplete/Autocomplete.vue'
+const emit = defineEmits(["emission"]);
 
-const currentIndex = ref(-1);
+const categories = ["At home", "Out", "At work", "Business trip"];
 
-const categories = shallowRef(["At home", "Out", "At work", "Business trip"]);
+const props = defineProps({
+  crvLog: Object,
+});
+
+const location = toRef(props.crvLog, "location");
+const space = toRef(props.crvLog, "space");
+
+// const currentIndex = ref(categories.indexOf(location));
 
 function getClasses(index) {
-  if (currentIndex.value < 0) return '';
-  return currentIndex.value === index ? 'selected' : 'unselected'
+  console.log('location.value', location.value)
+  if (!location.value) return "";
+  return categories.indexOf(location.value) === index ? "selected" : "unselected";
 }
+
+function handleLocationClick(index) {
+  console.log('categories[index]', categories[index])
+  emit("emission", { location: categories[index] });
+}
+
 </script>
 
 <template>
@@ -17,20 +33,29 @@ function getClasses(index) {
       <div
         v-for="(category, index) in categories"
         :class="getClasses(index)"
-        @click="currentIndex = index"
-      >{{ category }}</div>
+        @click="handleLocationClick(index)"
+      >
+        {{ category }}
+      </div>
       <div>Add new +</div>
     </div>
 
-    <div class="list-container">
-      <input list="locations" placeholder="Write new or choose existing" />
+    <Autocomplete
+      v-if="location"
+      :crvLog="crvLog"
+      :list="['Living room', 'Bedroom', 'Office', 'Bathroom']"
+      property="space"
+    ></Autocomplete>
+
+    <!-- <div v-if="location" class="list-container">
+      <input list="locations" placeholder="Write new or choose existing" v-model="space"/>
       <datalist id="locations">
         <option value="Living room"></option>
         <option value="Bedroom"></option>
         <option value="Office"></option>
         <option value="Bathroom"></option>
       </datalist>
-    </div>
+    </div> -->
   </div>
 </template>
 
@@ -70,7 +95,7 @@ function getClasses(index) {
       border-top: 1px solid var(--thistle);
       border-right: 1px solid var(--thistle);
       box-shadow: 1px 1px 4px var(--thistle);
-      transition: .3s;
+      transition: 0.3s;
     }
     & div:last-child {
       background-color: #8bbaaf;

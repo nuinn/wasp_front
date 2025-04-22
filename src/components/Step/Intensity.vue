@@ -1,6 +1,7 @@
 <script setup>
-import { ref, onMounted } from "vue";
-const emit = defineEmits(["emission"]);
+import { useLogStore } from '../../stores/crvLog';
+
+const crvLog = useLogStore();
 
 const levels = [
   "Barely noticeable",
@@ -9,43 +10,43 @@ const levels = [
   "Really pulling me",
   "All I can think about",
 ];
-// const currentIndex = ref(-1);
 
-const props = defineProps({
-  crvLog: Object
-})
+// import { toRef } from "vue";
+// const emit = defineEmits(["emission"]);
 
-onMounted(() => {
-  console.log('crvLog', props.crvLog)
-})
+// // const currentIndex = ref(-1);
+
+// const props = defineProps({
+//   crvLog: Object
+// })
+
+// const intensity = toRef(props.crvLog, 'intensity');
 
 function getClasses(index) {
   const classes = [`intensity-${index + 1}`];
-  if (index === props.crvLog.intensity - 1) classes.push("selected");
+  if (index === crvLog.intensity - 1) classes.push("selected");
   return classes.join(" ");
 }
 
-function handleClick(index) {
-  // currentIndex.value = index;
-  emit("emission", { intensity: index + 1 });
-}
+// function handleClick(index) {
+
+//   emit("emission", { intensity: index + 1 });
+// }
 
 </script>
 
 <template>
   <div id="intensity-component">
     <div class="scale-container">
-      <pre>{{ crvLog }}</pre>
-
       <div
         v-for="(_, index) in levels"
         class="level"
         :class="getClasses(index)"
-        @click="handleClick(index)"
+        @click="crvLog.intensity = index + 1"
       ></div>
       <div class="level blocker"></div>
       <div class="inner-circle">
-        {{ crvLog.intensity }}
+        {{ crvLog.intensity || '' }}
       </div>
       <div class="borderer"></div>
     </div>

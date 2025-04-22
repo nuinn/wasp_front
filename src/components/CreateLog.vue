@@ -1,29 +1,16 @@
 <script setup>
-import { ref, shallowRef, reactive } from "vue";
-import textsData from "../data/texts.js";
-import Intensity from "./Step/Intensity.vue";
-import Location from "./Step/Location.vue";
-
+import { ref, computed } from "vue";
+import formMap from "../data/formMap.js";
 import Navigate from "./Navigate/Navigate.vue";
+import { useLogStore } from '../stores/crvLog.js';
 
-const currentStep = ref(1);
-const canProgress = ref(false);
+const crvLog = useLogStore();
+const currentStep = ref(0);
 
-const steps = shallowRef([
-  Intensity,
-  Location
-]);
-const texts = shallowRef([...textsData]);
-
-const crvLog = reactive({
-  intensity: 0
-});
-
-function handleEmission(e) {
-  canProgress.value = true;
-  crvLog.value = { ...crvLog.value, ...e };
-  console.log("crvLog.value", crvLog.value);
-}
+// this doesn't work!
+const canProgress = computed(() => {
+  return formMap[currentStep.value].data.every(datum => !!crvLog[datum])
+})
 
 function next() {
   if (currentStep.value < steps.value.length) currentStep.value++;
@@ -37,15 +24,11 @@ function back() {
 <template>
   <div id="log-wrap">
     <div class="instructions-container">
-      <h1>{{ texts[currentStep].title }}</h1>
-      <p>{{ texts[currentStep].detail }}</p>
+      <h1>{{ formMap[currentStep].title }}</h1>
+      <p>{{ formMap[currentStep].detail }}</p>
     </div>
 
-    <component
-      :crvLog="crvLog"
-      :is="steps[currentStep]"
-      @emission="(e) => handleEmission(e)"
-    ></component>
+    <component :is="formMap[currentStep].component"></component>
     <div class="navigate-housing">
       <Navigate
         :canProgress="canProgress"
