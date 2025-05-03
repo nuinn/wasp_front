@@ -1,28 +1,16 @@
 <script setup>
-import { ref, toRef } from "vue";
-import Autocomplete from '../Autocomplete/Autocomplete.vue'
-const emit = defineEmits(["emission"]);
+import Autocomplete from "../Autocomplete/Autocomplete.vue";
+import { useLogStore } from "../../stores/crvLog";
+
+const crvLog = useLogStore();
 
 const categories = ["At home", "Out", "At work", "Business trip"];
 
-const props = defineProps({
-  crvLog: Object,
-});
-
-const location = toRef(props.crvLog, "location");
-const space = toRef(props.crvLog, "space");
-
-// const currentIndex = ref(categories.indexOf(location));
-
-function getClasses(index) {
-  console.log('location.value', location.value)
-  if (!location.value) return "";
-  return categories.indexOf(location.value) === index ? "selected" : "unselected";
-}
-
-function handleLocationClick(index) {
-  console.log('categories[index]', categories[index])
-  emit("emission", { location: categories[index] });
+function getClasses(category) {
+  if (!crvLog.location) return "";
+  return category === crvLog.location
+    ? "selected"
+    : "unselected";
 }
 
 </script>
@@ -31,9 +19,9 @@ function handleLocationClick(index) {
   <div id="location-component">
     <div class="category-carousel">
       <div
-        v-for="(category, index) in categories"
-        :class="getClasses(index)"
-        @click="handleLocationClick(index)"
+        v-for="category in categories"
+        :class="getClasses(category)"
+        @click="crvLog.location = category"
       >
         {{ category }}
       </div>
@@ -41,21 +29,10 @@ function handleLocationClick(index) {
     </div>
 
     <Autocomplete
-      v-if="location"
-      :crvLog="crvLog"
+      v-if="crvLog.location"
       :list="['Living room', 'Bedroom', 'Office', 'Bathroom']"
       property="space"
     ></Autocomplete>
-
-    <!-- <div v-if="location" class="list-container">
-      <input list="locations" placeholder="Write new or choose existing" v-model="space"/>
-      <datalist id="locations">
-        <option value="Living room"></option>
-        <option value="Bedroom"></option>
-        <option value="Office"></option>
-        <option value="Bathroom"></option>
-      </datalist>
-    </div> -->
   </div>
 </template>
 

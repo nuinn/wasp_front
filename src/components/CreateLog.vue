@@ -2,18 +2,26 @@
 import { ref, computed } from "vue";
 import formMap from "../data/formMap.js";
 import Navigate from "./Navigate/Navigate.vue";
-import { useLogStore } from '../stores/crvLog.js';
+import { useLogStore } from "../stores/crvLog.js";
 
 const crvLog = useLogStore();
 const currentStep = ref(0);
 
-// this doesn't work!
+const isUserInput = computed(() => {
+  return formMap[currentStep.value].data.every((datum) =>
+    Array.isArray(datum.property)
+      ? crvLog[datum.property].length
+      : crvLog[datum.property]
+  )
+});
+
 const canProgress = computed(() => {
-  return formMap[currentStep.value].data.every(datum => !!crvLog[datum])
-})
+  return formMap[currentStep.value].canSkip || isUserInput;
+});
 
 function next() {
-  if (currentStep.value < steps.value.length) currentStep.value++;
+  if (currentStep.value < formMap.length) currentStep.value++;
+  console.log("crvLog.$state", crvLog.$state);
 }
 
 function back() {
@@ -33,6 +41,7 @@ function back() {
       <Navigate
         :canProgress="canProgress"
         :canReturn="!!currentStep"
+        :skip="!isUserInput"
         @back="back"
         @next="next"
       ></Navigate>

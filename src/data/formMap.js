@@ -1,6 +1,8 @@
 import Intensity from '../components/Step/Intensity.vue';
 import Location from '../components/Step/Location.vue';
 import Activity from '../components/Step/Activity.vue';
+import Trigger from '../components/Step/Trigger.vue';
+import Vulnerabilties from '../components/Step/Vulnerabilties.vue';
 
 export default [
   {
@@ -42,27 +44,29 @@ export default [
     ],
   },
   {
+    title: "Trigger",
+    detail: "Did you notice anything specific which set off the craving?",
+    component: Trigger,
     data: [
       {
         property: "trigger",
         type: String,
       },
     ],
-    title: "Triggers",
-    detail: "Did you notice anything specific which set off the craving?",
     canSkip: true,
     default: `I don't know`,
   },
   {
+    title: "Vulnerabilities",
+    detail:
+      "Are there any factors which might be making you more vulnerable to cravings?",
+    component: Vulnerabilties,
     data: [
       {
         property: "vulnerabilities",
         type: Array,
       },
     ],
-    title: "Vulnerabilities",
-    detail:
-      "Are there any factors which might be making you more vulnerable to cravings?",
     canSkip: true,
     default: `I don't think so`,
   },

@@ -11,27 +11,11 @@ const levels = [
   "All I can think about",
 ];
 
-// import { toRef } from "vue";
-// const emit = defineEmits(["emission"]);
-
-// // const currentIndex = ref(-1);
-
-// const props = defineProps({
-//   crvLog: Object
-// })
-
-// const intensity = toRef(props.crvLog, 'intensity');
-
 function getClasses(index) {
   const classes = [`intensity-${index + 1}`];
   if (index === crvLog.intensity - 1) classes.push("selected");
   return classes.join(" ");
 }
-
-// function handleClick(index) {
-
-//   emit("emission", { intensity: index + 1 });
-// }
 
 </script>
 

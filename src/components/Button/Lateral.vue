@@ -1,5 +1,6 @@
 <script setup>
 defineProps({
+  skip: Boolean,
   type: String,
 });
 const emit = defineEmits(["click"]);
@@ -17,7 +18,7 @@ const emit = defineEmits(["click"]);
     >
       <path d="M400-80 0-480l400-400 71 71-329 329 329 329-71 71Z" />
     </svg>
-    <span>{{ type.includes("back") ? "Back" : "Next" }}</span>
+    <span>{{ skip ? 'Skip' : type.includes("back") ? "Back" : "Next" }}</span>
     <svg
       v-if="type.includes('next')"
       xmlns="http://www.w3.org/2000/svg"

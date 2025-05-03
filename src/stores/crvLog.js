@@ -5,6 +5,8 @@ export const useLogStore = defineStore("crvLog", {
     intensity: 0,
     location: "",
     space: "",
+    activity: "",
+    trigger: "",
   }),
   actions: {
     setIntensity(value) {

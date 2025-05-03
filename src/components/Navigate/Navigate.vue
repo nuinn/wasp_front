@@ -4,6 +4,7 @@ const emit = defineEmits(["back", "next"]);
 defineProps({
   canProgress: Boolean,
   canReturn: Boolean,
+  skip: Boolean,
 });
 </script>
 
@@ -14,6 +15,7 @@ defineProps({
       @click="emit('back')"
     ></Lateral>
     <Lateral
+      :skip="skip"
       :type="`next ${canProgress ? '' : 'disabled'}`"
       @click="emit('next')"
     ></Lateral>

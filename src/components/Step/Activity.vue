@@ -6,7 +6,8 @@ import Autocomplete from '../Autocomplete/Autocomplete.vue';
 <template>
   <div id="activity-component">
     <Autocomplete
-      :crvLog="crvLog"
+      :list="['Watching TV']"
+      property="activity"
     ></Autocomplete>
   </div>
 </template>
